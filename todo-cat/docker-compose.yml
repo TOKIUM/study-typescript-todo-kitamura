@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  node:
+    # node, yarnコマンド実行用コンテナ
+    # mkdir node_modulesしておく
+    # dce node yarn install --network-timeout 1000000
+    # dce node yarn build
+    # dce node yarn test
+    # dce node yarn watch
+    # dce node /bin/sh してからいろいろコマンドを実行
+    # ↓ yarn watchがメモリエラーで辛い時はNODE_MAX_OLD_SPACE_SIZE=8192などを指定する
+    # dce node -e NODE_MAX_OLD_SPACE_SIZE=8192 yarn watch
+    container_name: ts_todo_node
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+    user: "node"
+    working_dir: /home/node
+    volumes:
+      - ./.eslintrc.json:/home/node/.eslintrc.json
+      - ./components:/home/node/components
+      - ./interfaces:/home/node/interfaces
+      - ./node_modules:/home/node/node_modules
+      - ./package.json:/home/node/package.json
+      - ./pages:/home/node/pages
+      - ./public:/home/node/public
+      - ./tsconfig.json:/home/node/tsconfig.json
+      - ./utils:/home/node/utils
+      - ./yarn.lock:/home/node/yarn.lock
+    command: /bin/sh -c "yarn dev -p 2222"
+    ports:
+      - "2222:2222" # dev server用
