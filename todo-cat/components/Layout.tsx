@@ -32,10 +32,6 @@ const Layout: React.FunctionComponent<Props> = ({
       </nav>
     </header>
     {children}
-    <footer>
-      <hr />
-      <span>I'm here to stay (Footer)</span>
-    </footer>
   </div>
 )
 
