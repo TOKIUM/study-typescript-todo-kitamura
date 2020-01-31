@@ -1,25 +1,48 @@
-import actionCreatorFactory, { Action, AsyncActionCreators } from 'typescript-fsa';
 
-const actionCreator = actionCreatorFactory('next:example:counter');
 
 export interface CounterParams {
   delta: number
 }
 
-export const actionTypes = {
-  TICK: 'TICK',
+export const ActionTypes = {
+  // TICK: 'TICK',
   INCREMENT: 'INCREMENT',
   DECREMENT: 'DECREMENT',
   RESET: 'RESET',
+} as const;
+
+interface IncrementAction {
+  type: typeof ActionTypes.INCREMENT,
+  payload: CounterParams,
 }
 
-export const increment = actionCreator<CounterParams>(actionTypes.INCREMENT);
-export const decrement = actionCreator<CounterParams>(actionTypes.DECREMENT);
-export const reset = actionCreator<void>(actionTypes.RESET);
+interface DecrementAction {
+  type: typeof ActionTypes.DECREMENT,
+  payload: CounterParams,
+}
 
-// export const incrementAsync = actionCreator.async<CounterParams, number>('INCREMENT_ASYNC');
-// export const decrementAsync = actionCreator.async<CounterParams, number>('DECREMENT_ASYNC');
+interface ResetAction {
+  type: typeof ActionTypes.RESET,
+}
 
-export type CounterAction = Action<CounterParams>; // | AsyncActionCreators<CounterParams, number, any>;
+export type CounterAction = IncrementAction | DecrementAction | ResetAction;
 
+export function increment(param: CounterParams): CounterAction {
+  return {
+    type: ActionTypes.INCREMENT,
+    payload: { ...param },
+  };
+};
 
+export function decrement(param: CounterParams): CounterAction {
+  return {
+    type: ActionTypes.DECREMENT,
+    payload: { ...param },
+  };
+}
+
+export function reset(): CounterAction {
+  return {
+    type: ActionTypes.RESET,
+  };
+}
