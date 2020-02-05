@@ -1,4 +1,6 @@
 import { ActionTypes, CounterAction } from './actions';
+import { createStore, applyMiddleware, Store } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const initialState = {
   count: 0,
@@ -33,4 +35,10 @@ const reducer = (state = initialState, action: CounterAction): State => {
   }
 };
 
-export default reducer;
+export const initializeStore = (preloadedState = initialState): Store<State, CounterAction> => {
+  return createStore(
+    reducer,
+    preloadedState,
+    composeWithDevTools(applyMiddleware())
+  )
+};
